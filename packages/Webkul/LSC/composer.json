@@ -1,0 +1,26 @@
+{
+    "name": "bagisto/laravel-lsc",
+    "license": "MIT",
+    "description" : "LSC package for store front caching",
+    "authors": [
+        {
+            "name": "Bagisto",
+            "email": "support@bagisto.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Webkul\\LSC\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Webkul\\LSC\\Providers\\LSCServiceProvider"
+            ],
+            "aliases": {}
+        }
+    },
+    "minimum-stability": "dev"
+}

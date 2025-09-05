@@ -1,0 +1,67 @@
+<?php
+
+namespace Webkul\LSC\Providers;
+
+use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\ServiceProvider;
+use Webkul\Core\Http\Middleware\PreventRequestsDuringMaintenance;
+use Webkul\LSC\Http\Middleware\NoLiteSpeedCache;
+use Webkul\LSC\Http\Middleware\LSCacheHeaders;
+
+class LSCServiceProvider extends ServiceProvider
+{
+    /**
+     * Register services.
+     */
+    public function register(): void
+    {
+        $this->registerConfig();
+    }
+    
+    /**
+     * Bootstrap services.
+     *
+     * @return void
+     */
+    public function boot(Router $router): void
+    {
+        $this->loadTranslationsFrom(__DIR__.'/../Resources/lang', 'lsc');
+
+        $this->loadViewsFrom(__DIR__.'/../Resources/views', 'lsc');
+
+        $this->app->register(EventServiceProvider::class);
+
+        $router->aliasMiddleware('no.lscache', NoLiteSpeedCache::class);
+        $router->aliasMiddleware('lscache.response', LSCacheHeaders::class);
+
+        Route::middleware(['web', 'shop', PreventRequestsDuringMaintenance::class])->group(__DIR__.'/../Routes/api.php');
+
+        $this->publishFiles();
+    }
+
+    /**
+     * Register package config.
+     */
+    protected function registerConfig(): void
+    {
+        $this->mergeConfigFrom(
+            dirname(__DIR__).'/Config/system.php',
+            'core'
+        );
+    }
+
+    /**
+     * Publish the files.
+     */
+    protected function publishFiles(): void
+    {
+        $this->publishes([
+            __DIR__.'/../Routes/admin/web.php' => __DIR__.'/../../../Admin/src/Routes/web.php',
+
+            __DIR__.'/../Routes/shop/store-front-routes.php' => __DIR__.'/../../../Shop/src/Routes/store-front-routes.php',
+
+            __DIR__.'/../Resources/views/shop/components/layouts/header' => resource_path('themes/default/views/components/layouts/header'),
+        ]);
+    }
+}
