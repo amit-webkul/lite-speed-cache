@@ -33,4 +33,16 @@ class ThemeCustomization
     {
         LSCache::purgeTags(['home']);
     }
+
+    /**
+     * After cart change (add, update)
+     *
+     * @return void
+     */
+    public function afterChange()
+    {
+        exec('php artisan litespeed:clear');
+
+        LSCache::purgeTags(['home', 'home-header', 'home-products']);
+    }
 }

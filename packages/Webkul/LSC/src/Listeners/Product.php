@@ -30,7 +30,9 @@ class Product
     {
         $urls = $this->getForgettableUrls($product);
 
-        LSCache::purgeTags($urls);
+        $tags = ['home-products', 'home', ...$urls];
+
+        LSCache::purgeTags($tags);
     }
 
     /**
@@ -45,7 +47,9 @@ class Product
 
         $urls = $this->getForgettableUrls($product);
 
-        LSCache::purgeTags($urls);
+        $tags = ['home-products', 'home', ...$urls];
+
+        LSCache::purgeTags($tags);
     }
 
     /**

@@ -6,6 +6,7 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Webkul\Core\Http\Middleware\PreventRequestsDuringMaintenance;
+use Webkul\LSC\Console\Commands\PurgeLiteSpeedCache;
 use Webkul\LSC\Http\Middleware\NoLiteSpeedCache;
 use Webkul\LSC\Http\Middleware\LSCacheHeaders;
 
@@ -17,6 +18,8 @@ class LSCServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->registerConfig();
+
+        $this->registerCommands();
     }
     
     /**
@@ -33,6 +36,7 @@ class LSCServiceProvider extends ServiceProvider
         $this->app->register(EventServiceProvider::class);
 
         $router->aliasMiddleware('no.lscache', NoLiteSpeedCache::class);
+
         $router->aliasMiddleware('lscache.response', LSCacheHeaders::class);
 
         Route::middleware(['web', 'shop', PreventRequestsDuringMaintenance::class])->group(__DIR__.'/../Routes/api.php');
@@ -49,6 +53,18 @@ class LSCServiceProvider extends ServiceProvider
             dirname(__DIR__).'/Config/system.php',
             'core'
         );
+    }
+
+    /**
+     * Register the Installer Commands of this package.
+     */
+    protected function registerCommands(): void
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                PurgeLiteSpeedCache::class,
+            ]);
+        }
     }
 
     /**

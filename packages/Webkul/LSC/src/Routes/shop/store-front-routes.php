@@ -16,36 +16,47 @@ use Webkul\Shop\Http\Controllers\Customer\CustomerController;
  */
 Route::get('page/{slug}', [PageController::class, 'view'])
     ->name('shop.cms.page')
-    ->middleware(['cache.response', 'lscache.response']);
+    ->middleware(['lscache.response', 'cache.response']);
 
 /**
  * Fallback route.
  */
 Route::fallback(ProductsCategoriesProxyController::class.'@index')
     ->name('shop.product_or_category.index')
-    ->middleware(['cache.response', 'lscache.response']);
+    ->middleware(['lscache.response', 'cache.response']);
 
 /**
  * Store front home.
  */
 Route::get('/', [HomeController::class, 'index'])
     ->name('shop.home.index')
-    ->middleware(['cache.response', 'lscache.response']);
+    ->middleware(['lscache.response', 'cache.response']);
 
 Route::get('contact-us', [HomeController::class, 'contactUs'])
     ->name('shop.home.contact_us')
-    ->middleware(['cache.response', 'lscache.response']);
+    ->middleware(['lscache.response', 'cache.response']);
 
 Route::post('contact-us/send-mail', [HomeController::class, 'sendContactUsMail'])
     ->name('shop.home.contact_us.send_mail')
     ->middleware('cache.response');
 
 /**
+ * Store front cart.
+ */
+Route::get('api/', [CartController::class, 'index'])
+    ->name('shop.api.checkout.cart.index')
+    ->middleware(['lscache.response', 'cache.response']);
+
+Route::post('api/', [CartController::class, 'store'])
+    ->name('shop.api.checkout.cart.store')
+    ->middleware(['lscache.response', 'cache.response']);
+
+/**
  * Store front search.
  */
 Route::get('search', [SearchController::class, 'index'])
     ->name('shop.search.index')
-    ->middleware(['cache.response', 'lscache.response']);
+    ->middleware(['lscache.response', 'cache.response']);
 
 Route::post('search/upload', [SearchController::class, 'upload'])->name('shop.search.upload');
 
@@ -63,7 +74,7 @@ Route::controller(SubscriptionController::class)->group(function () {
  */
 Route::get('compare', [CompareController::class, 'index'])
     ->name('shop.compare.index')
-    ->middleware(['cache.response', 'lscache.response']);
+    ->middleware(['lscache.response', 'cache.response']);
 
 /**
  * Downloadable products

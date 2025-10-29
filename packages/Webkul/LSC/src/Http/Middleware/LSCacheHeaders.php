@@ -51,7 +51,7 @@ class LSCacheHeaders extends BaseLSCacheMiddleware
         $lastSegment = last(explode('/', $routePathInfo));
 
         $tags = match ($routeName) {
-            'shop.home.index'                => ['home'],
+            'shop.home.index'                => ['home', 'home-header', 'home-products'],
             'shop.cms.page'                  => ["page_$lastSegment"],
             'shop.product_or_category.index' => $this->getProductOrCategoryTags($slug),
             'shop.home.contact_us'           => ['contact'],
