@@ -14,49 +14,45 @@ use Webkul\Shop\Http\Controllers\Customer\CustomerController;
 /**
  * CMS pages.
  */
-Route::get('page/{slug}', [PageController::class, 'view'])
-    ->name('shop.cms.page')
-    ->middleware(['lscache.response', 'cache.response']);
 
-/**
- * Fallback route.
- */
-Route::fallback(ProductsCategoriesProxyController::class.'@index')
-    ->name('shop.product_or_category.index')
-    ->middleware(['lscache.response', 'cache.response']);
+Route::middleware(['lscache.response', 'cache.response'])->group(function () {
+    Route::get('page/{slug}', [PageController::class, 'view'])
+        ->name('shop.cms.page');
 
-/**
- * Store front home.
- */
-Route::get('/', [HomeController::class, 'index'])
-    ->name('shop.home.index')
-    ->middleware(['lscache.response', 'cache.response']);
+    /**
+     * Fallback route.
+     */
+    Route::fallback(ProductsCategoriesProxyController::class.'@index')
+        ->name('shop.product_or_category.index');
 
-Route::get('contact-us', [HomeController::class, 'contactUs'])
-    ->name('shop.home.contact_us')
-    ->middleware(['lscache.response', 'cache.response']);
+    /**
+     * Store front home.
+     */
+    Route::get('/', [HomeController::class, 'index'])
+        ->name('shop.home.index');
+
+    Route::get('contact-us', [HomeController::class, 'contactUs'])
+        ->name('shop.home.contact_us');
+
+    /**
+     * Store front cart.
+     */
+    Route::get('api/', [CartController::class, 'index'])
+        ->name('shop.api.checkout.cart.index');
+
+    Route::post('api/', [CartController::class, 'store'])
+        ->name('shop.api.checkout.cart.store');
+
+    /**
+     * Store front search.
+     */
+    Route::get('search', [SearchController::class, 'index'])
+        ->name('shop.search.index');
+});
 
 Route::post('contact-us/send-mail', [HomeController::class, 'sendContactUsMail'])
     ->name('shop.home.contact_us.send_mail')
     ->middleware('cache.response');
-
-/**
- * Store front cart.
- */
-Route::get('api/', [CartController::class, 'index'])
-    ->name('shop.api.checkout.cart.index')
-    ->middleware(['lscache.response', 'cache.response']);
-
-Route::post('api/', [CartController::class, 'store'])
-    ->name('shop.api.checkout.cart.store')
-    ->middleware(['lscache.response', 'cache.response']);
-
-/**
- * Store front search.
- */
-Route::get('search', [SearchController::class, 'index'])
-    ->name('shop.search.index')
-    ->middleware(['lscache.response', 'cache.response']);
 
 Route::post('search/upload', [SearchController::class, 'upload'])->name('shop.search.upload');
 
