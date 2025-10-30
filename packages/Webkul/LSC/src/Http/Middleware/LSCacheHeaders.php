@@ -11,11 +11,18 @@ use Webkul\Marketing\Repositories\URLRewriteRepository;
 
 class LSCacheHeaders extends BaseLSCacheMiddleware
 {
+    /**
+     * Routes eligible for caching.
+     *
+     * @var array
+     */
     protected $cacheRoutes = [
         'shop.home.index',
         'shop.cms.page',
         'shop.product_or_category.index',
         'shop.home.contact_us',
+        'shop.api.checkout.cart.index',
+        'shop.api.checkout.cart.store',
         'shop.search.index',
         'shop.compare.index',
     ];
@@ -55,17 +62,28 @@ class LSCacheHeaders extends BaseLSCacheMiddleware
             'shop.cms.page'                  => ["page_$lastSegment"],
             'shop.product_or_category.index' => $this->getProductOrCategoryTags($slug),
             'shop.home.contact_us'           => ['contact'],
+            'shop.api.checkout.cart.index'   => ['home', 'home-header'],
+            'shop.api.checkout.cart.store'   => ['home', 'home-header'],
             'shop.search.index'              => ['search'],
             'shop.compare.index'             => ['compare'],
             default                          => [],
         };
 
+        if (
+            $request->isMethod('POST')
+            && in_array($routeName, ['shop.api.checkout.cart.store', 'shop.product_or_category.index'], true)
+        ) {
+            $this->purgeTags(['home', 'home-header']);
+
+            return $response;
+        }
+
         $lsCacheGuestOnly = env('LSCACHE_GUEST_ONLY', (bool) core()->getConfigData('lsc.configuration.cache_application.guest_only'));
-        
+
         $lsCacheTTL = env('LSCACHE_DEFAULT_TTL', (int) core()->getConfigData('lsc.configuration.cache_application.default_ttl'));
-        
+
         $lsCacheCacheability = env('LSCACHE_DEFAULT_CACHEABILITY', 'public');
-        
+
         $lscacheControl = "$lsCacheCacheability, max-age=$lsCacheTTL";
 
         if (empty($tags) || $lsCacheTTL === 0) {
@@ -74,11 +92,10 @@ class LSCacheHeaders extends BaseLSCacheMiddleware
         
         $validCondition = in_array($request->getMethod(), ['GET', 'HEAD']) && $response->getContent() && $response->getStatusCode() === 200;
 
-        if ($validCondition && $lsCacheGuestOnly && auth()->guard($guard)->check()) {
-            return $this->setNoCacheHeaders($response);
-        }
-
-        if (! $validCondition) {
+        if (
+            ! $validCondition
+            || ($lsCacheGuestOnly && auth()->guard($guard)->check())
+        ) {
             return $this->setNoCacheHeaders($response);
         }
 

@@ -84,7 +84,7 @@ class EventServiceProvider extends ServiceProvider
             'Webkul\LSC\Listeners\URLRewrite@beforeDelete',
         ],
 
-        'checkout.cart.add.after' => [
+        'checkout.cart.add.before' => [
             'Webkul\LSC\Listeners\ThemeCustomization@afterChange',
         ],
 

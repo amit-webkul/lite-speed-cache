@@ -48,6 +48,12 @@ Route::middleware(['lscache.response', 'cache.response'])->group(function () {
      */
     Route::get('search', [SearchController::class, 'index'])
         ->name('shop.search.index');
+
+    /**
+     * Compare products
+     */
+    Route::get('compare', [CompareController::class, 'index'])
+        ->name('shop.compare.index');
 });
 
 Route::post('contact-us/send-mail', [HomeController::class, 'sendContactUsMail'])
@@ -64,13 +70,6 @@ Route::controller(SubscriptionController::class)->group(function () {
 
     Route::get('subscription/{token}', 'destroy')->name('shop.subscription.destroy');
 });
-
-/**
- * Compare products
- */
-Route::get('compare', [CompareController::class, 'index'])
-    ->name('shop.compare.index')
-    ->middleware(['lscache.response', 'cache.response']);
 
 /**
  * Downloadable products
