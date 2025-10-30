@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Webkul\Shop\Http\Controllers\BookingProductController;
 use Webkul\Shop\Http\Controllers\CompareController;
+use Webkul\Shop\Http\Controllers\API\CartController;
 use Webkul\Shop\Http\Controllers\HomeController;
 use Webkul\Shop\Http\Controllers\PageController;
 use Webkul\Shop\Http\Controllers\ProductController;
@@ -37,11 +38,14 @@ Route::middleware(['lscache.response', 'cache.response'])->group(function () {
     /**
      * Store front cart.
      */
-    Route::get('api/', [CartController::class, 'index'])
+    Route::get('api/checkout/cart', [CartController::class, 'index'])
         ->name('shop.api.checkout.cart.index');
 
-    Route::post('api/', [CartController::class, 'store'])
+    Route::post('api/checkout/cart', [CartController::class, 'store'])
         ->name('shop.api.checkout.cart.store');
+
+    Route::delete('api/checkout/cart', [CartController::class, 'destroy'])
+        ->name('shop.api.checkout.cart.destroy');
 
     /**
      * Store front search.

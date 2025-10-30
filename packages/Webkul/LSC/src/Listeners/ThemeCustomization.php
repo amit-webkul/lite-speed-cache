@@ -2,10 +2,14 @@
 
 namespace Webkul\LSC\Listeners;
 
+use Webkul\LSC\Traits\DeletesAllCache;
+
 use LSCache;
 
 class ThemeCustomization
 {
+    use DeletesAllCache;
+
     /**
      * After theme customization create
      * @return void
@@ -41,8 +45,8 @@ class ThemeCustomization
      */
     public function afterChange()
     {
-        exec('php artisan litespeed:clear');
+        $this->deletePrivCache();
 
-        LSCache::purgeTags(['home', 'home-header', 'home-products']);
+        LSCache::purgeTags(['home', 'home-header']);
     }
 }

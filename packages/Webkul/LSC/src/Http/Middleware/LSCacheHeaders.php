@@ -3,6 +3,7 @@
 namespace Webkul\LSC\Http\Middleware;
 
 use Closure;
+use LSCache;
 use Litespeed\LSCache\LSCacheMiddleware as BaseLSCacheMiddleware;
 use Webkul\Category\Repositories\CategoryRepository;
 use Webkul\Product\Repositories\ProductRepository;
@@ -23,6 +24,7 @@ class LSCacheHeaders extends BaseLSCacheMiddleware
         'shop.home.contact_us',
         'shop.api.checkout.cart.index',
         'shop.api.checkout.cart.store',
+        'shop.api.checkout.cart.destroy',
         'shop.search.index',
         'shop.compare.index',
     ];
@@ -36,7 +38,23 @@ class LSCacheHeaders extends BaseLSCacheMiddleware
      */
     public function handle($request, Closure $next, $guard = 'customer')
     {
+        $isProductOrCategory = $this->shouldHandleProductOrCategoryCache($request);
+        $slug = $isProductOrCategory ? urldecode(trim($request->getPathInfo(), '/')) : null;
+        $cacheKey = $isProductOrCategory ? 'product_or_category_' . $slug : null;
+        $cachedData = $isProductOrCategory ? cache()->get($cacheKey) : null;
+
         $response = $next($request);
+
+        if ($isProductOrCategory) {
+            $content = $response->getContent();
+            $controllerData = json_decode($content, true);
+            if ($cachedData && $controllerData && $cachedData == $controllerData) {
+                return response()->json($cachedData);
+            } elseif ($controllerData) {
+                cache()->put($cacheKey, $controllerData, now()->addMinutes(10));
+                return $response;
+            }
+        }
 
         if ((bool) config('responsecache.enabled')) {
             return $response;
@@ -47,6 +65,7 @@ class LSCacheHeaders extends BaseLSCacheMiddleware
         }
 
         $route = $request->route();
+
         $routeName = $route?->getName();
         $routePathInfo = $request->getPathInfo();
 
@@ -64,16 +83,18 @@ class LSCacheHeaders extends BaseLSCacheMiddleware
             'shop.home.contact_us'           => ['contact'],
             'shop.api.checkout.cart.index'   => ['home', 'home-header'],
             'shop.api.checkout.cart.store'   => ['home', 'home-header'],
+            'shop.api.checkout.cart.destroy' => ['home', 'home-header'],
             'shop.search.index'              => ['search'],
             'shop.compare.index'             => ['compare'],
             default                          => [],
         };
 
-        if (
-            $request->isMethod('POST')
-            && in_array($routeName, ['shop.api.checkout.cart.store', 'shop.product_or_category.index'], true)
-        ) {
-            $this->purgeTags(['home', 'home-header']);
+        if (in_array($routeName, [
+            'shop.api.checkout.cart.store',
+            'shop.api.checkout.cart.destroy',
+            'shop.product_or_category.index',
+        ], true)) {
+            $this->invalidateHomeCache();
 
             return $response;
         }
@@ -148,5 +169,27 @@ class LSCacheHeaders extends BaseLSCacheMiddleware
         $response->headers->set('X-LiteSpeed-Cache-Control', 'no-cache');
         
         return $response;
+    }
+
+    /**
+     * Determine if the request should handle product or category cache.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
+     */
+    protected function shouldHandleProductOrCategoryCache($request)
+    {
+        $route = $request->route();
+
+        return $route?->getName() === 'shop.product_or_category.index' && in_array($request->getMethod(), ['GET', 'HEAD']);
+    }
+
+    /**
+     * Summary of invalidateHomeCache.
+     * @return void
+     */
+    protected function invalidateHomeCache()
+    {
+        LSCache::purgeTags(['home', 'home-header']);
     }
 }
