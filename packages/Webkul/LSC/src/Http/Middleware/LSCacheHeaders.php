@@ -36,12 +36,25 @@ class LSCacheHeaders extends BaseLSCacheMiddleware
      */
     public function handle($request, Closure $next, $guard = 'customer')
     {
+        $response = $next($request);
+
+        if ((bool) config('responsecache.enabled')) {
+            return $response;
+        }
+
+        if (! (bool) core()->getConfigData('lsc.configuration.cache_application.active')) {
+            return $response;
+        }
+
+        if (auth()->guard($guard)->check() && (bool) core()->getConfigData('lsc.configuration.cache_application.guest_only')) {
+            return $this->setNoCacheHeaders($response);
+        }
+
         $isProductOrCategory = $this->shouldHandleProductOrCategoryCache($request);
         $slug = $isProductOrCategory ? urldecode(trim($request->getPathInfo(), '/')) : null;
+
         $cacheKey = $isProductOrCategory ? 'product_or_category_'.$slug : null;
         $cachedData = $isProductOrCategory ? cache()->get($cacheKey) : null;
-
-        $response = $next($request);
 
         if ($isProductOrCategory) {
             $content = $response->getContent();
@@ -55,20 +68,12 @@ class LSCacheHeaders extends BaseLSCacheMiddleware
             }
         }
 
-        if ((bool) config('responsecache.enabled')) {
-            return $response;
-        }
-
-        if (! (bool) core()->getConfigData('lsc.configuration.cache_application.active')) {
-            return $response;
-        }
-
         $route = $request->route();
 
         $routeName = $route?->getName();
         $routePathInfo = $request->getPathInfo();
 
-        if (! in_array($routeName, $this->cacheRoutes, true)) {
+        if (! in_array($routeName, $this->cacheRoutes, true) ?? false) {
             return $response;
         }
 
@@ -76,13 +81,10 @@ class LSCacheHeaders extends BaseLSCacheMiddleware
         $lastSegment = last(explode('/', $routePathInfo));
 
         $tags = match ($routeName) {
-            'shop.home.index'                => ['home', 'home-header', 'home-products'],
+            'shop.home.index'                => ['home'],
             'shop.cms.page'                  => ["page_$lastSegment"],
             'shop.product_or_category.index' => $this->getProductOrCategoryTags($slug),
             'shop.home.contact_us'           => ['contact'],
-            'shop.api.checkout.cart.index'   => ['home', 'home-header'],
-            'shop.api.checkout.cart.store'   => ['home', 'home-header'],
-            'shop.api.checkout.cart.destroy' => ['home', 'home-header'],
             'shop.search.index'              => ['search'],
             'shop.compare.index'             => ['compare'],
             default                          => [],
@@ -106,7 +108,15 @@ class LSCacheHeaders extends BaseLSCacheMiddleware
 
         $lscacheControl = "$lsCacheCacheability, max-age=$lsCacheTTL";
 
-        if (empty($tags) || $lsCacheTTL === 0) {
+        if (
+            (
+                is_array($tags)
+                && count(array_filter($tags)) === 0
+            ) || (
+                is_numeric($lsCacheTTL)
+                && (int)$lsCacheTTL === 0
+            )
+        ) {
             return $this->setNoCacheHeaders($response);
         }
 
@@ -184,8 +194,7 @@ class LSCacheHeaders extends BaseLSCacheMiddleware
     }
 
     /**
-     * Summary of invalidateHomeCache.
-     * @return void
+     * Invalidate home page cache.
      */
     protected function invalidateHomeCache()
     {
