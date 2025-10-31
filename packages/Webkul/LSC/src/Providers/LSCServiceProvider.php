@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Webkul\Core\Http\Middleware\PreventRequestsDuringMaintenance;
 use Webkul\LSC\Console\Commands\PurgeLiteSpeedCache;
-use Webkul\LSC\Http\Middleware\NoLiteSpeedCache;
 use Webkul\LSC\Http\Middleware\LSCacheHeaders;
+use Webkul\LSC\Http\Middleware\NoLiteSpeedCache;
 
 class LSCServiceProvider extends ServiceProvider
 {
@@ -21,11 +21,9 @@ class LSCServiceProvider extends ServiceProvider
 
         $this->registerCommands();
     }
-    
+
     /**
      * Bootstrap services.
-     *
-     * @return void
      */
     public function boot(Router $router): void
     {

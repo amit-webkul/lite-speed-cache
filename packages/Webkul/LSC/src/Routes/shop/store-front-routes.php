@@ -1,21 +1,19 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Webkul\Shop\Http\Controllers\API\CartController;
 use Webkul\Shop\Http\Controllers\BookingProductController;
 use Webkul\Shop\Http\Controllers\CompareController;
-use Webkul\Shop\Http\Controllers\API\CartController;
 use Webkul\Shop\Http\Controllers\HomeController;
 use Webkul\Shop\Http\Controllers\PageController;
 use Webkul\Shop\Http\Controllers\ProductController;
 use Webkul\Shop\Http\Controllers\ProductsCategoriesProxyController;
 use Webkul\Shop\Http\Controllers\SearchController;
 use Webkul\Shop\Http\Controllers\SubscriptionController;
-use Webkul\Shop\Http\Controllers\Customer\CustomerController;
 
 /**
  * CMS pages.
  */
-
 Route::middleware(['lscache.response', 'cache.response'])->group(function () {
     Route::get('page/{slug}', [PageController::class, 'view'])
         ->name('shop.cms.page');

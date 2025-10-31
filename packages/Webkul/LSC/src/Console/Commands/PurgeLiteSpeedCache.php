@@ -2,11 +2,8 @@
 
 namespace Webkul\LSC\Console\Commands;
 
-use Webkul\LSC\Traits\DeletesAllCache;
-
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\File;
+use Webkul\LSC\Traits\DeletesAllCache;
 
 class PurgeLiteSpeedCache extends Command
 {
@@ -28,13 +25,13 @@ class PurgeLiteSpeedCache extends Command
 
     /**
      * Execute the console command.
-     * 
+     *
      * @return void
      */
     public function handle()
     {
         $this->deletePrivCache();
 
-        $this->info("✅ LiteSpeed Cache fully cleared!");
+        $this->info('✅ LiteSpeed Cache fully cleared!');
     }
 }

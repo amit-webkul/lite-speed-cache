@@ -3,8 +3,8 @@
 namespace Webkul\LSC\Listeners;
 
 use LSCache;
-use Webkul\LSC\Traits\DeletesAllCache;
 use Webkul\Category\Repositories\CategoryRepository;
+use Webkul\LSC\Traits\DeletesAllCache;
 
 class Category
 {

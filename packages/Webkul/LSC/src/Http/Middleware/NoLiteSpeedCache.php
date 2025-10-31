@@ -25,8 +25,7 @@ class NoLiteSpeedCache
         }
 
         $response->headers->set('X-LiteSpeed-Cache-Control', 'no-cache');
-        
+
         return $response;
     }
 }
-

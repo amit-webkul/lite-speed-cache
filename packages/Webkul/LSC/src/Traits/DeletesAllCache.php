@@ -10,7 +10,7 @@ trait DeletesAllCache
     /**
      * Delete all files and directories inside the priv cache folder.
      *
-     * @param string $privPath
+     * @param  string  $privPath
      * @return void
      */
     public function deletePrivCache($privPath = '/usr/local/lsws/cachedata/priv')
@@ -35,7 +35,7 @@ trait DeletesAllCache
                 Log::warning('Priv path does not exist', ['path' => $privPath]);
             }
         } catch (\Exception $e) {
-            Log::error('Failed to delete priv contents: ' . $e->getMessage());
+            Log::error('Failed to delete priv contents: '.$e->getMessage());
         }
     }
 }

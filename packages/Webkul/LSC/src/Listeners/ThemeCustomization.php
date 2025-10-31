@@ -2,9 +2,8 @@
 
 namespace Webkul\LSC\Listeners;
 
-use Webkul\LSC\Traits\DeletesAllCache;
-
 use LSCache;
+use Webkul\LSC\Traits\DeletesAllCache;
 
 class ThemeCustomization
 {
@@ -12,6 +11,7 @@ class ThemeCustomization
 
     /**
      * After theme customization create
+     *
      * @return void
      */
     public function afterCreate()
@@ -21,6 +21,7 @@ class ThemeCustomization
 
     /**
      * After theme customization update
+     *
      * @return void
      */
     public function afterUpdate()

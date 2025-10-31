@@ -3,12 +3,10 @@
 namespace Webkul\LSC\Http\Middleware;
 
 use Closure;
-use LSCache;
 use Litespeed\LSCache\LSCacheMiddleware as BaseLSCacheMiddleware;
+use LSCache;
 use Webkul\Category\Repositories\CategoryRepository;
 use Webkul\Product\Repositories\ProductRepository;
-use Webkul\Marketing\Repositories\SearchTermRepository;
-use Webkul\Marketing\Repositories\URLRewriteRepository;
 
 class LSCacheHeaders extends BaseLSCacheMiddleware
 {
@@ -40,7 +38,7 @@ class LSCacheHeaders extends BaseLSCacheMiddleware
     {
         $isProductOrCategory = $this->shouldHandleProductOrCategoryCache($request);
         $slug = $isProductOrCategory ? urldecode(trim($request->getPathInfo(), '/')) : null;
-        $cacheKey = $isProductOrCategory ? 'product_or_category_' . $slug : null;
+        $cacheKey = $isProductOrCategory ? 'product_or_category_'.$slug : null;
         $cachedData = $isProductOrCategory ? cache()->get($cacheKey) : null;
 
         $response = $next($request);
@@ -52,6 +50,7 @@ class LSCacheHeaders extends BaseLSCacheMiddleware
                 return response()->json($cachedData);
             } elseif ($controllerData) {
                 cache()->put($cacheKey, $controllerData, now()->addMinutes(10));
+
                 return $response;
             }
         }
@@ -110,7 +109,7 @@ class LSCacheHeaders extends BaseLSCacheMiddleware
         if (empty($tags) || $lsCacheTTL === 0) {
             return $this->setNoCacheHeaders($response);
         }
-        
+
         $validCondition = in_array($request->getMethod(), ['GET', 'HEAD']) && $response->getContent() && $response->getStatusCode() === 200;
 
         if (
@@ -167,7 +166,7 @@ class LSCacheHeaders extends BaseLSCacheMiddleware
         $response->headers->set('Cache-Control', 'no-cache, no-store, must-revalidate');
 
         $response->headers->set('X-LiteSpeed-Cache-Control', 'no-cache');
-        
+
         return $response;
     }
 
