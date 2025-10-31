@@ -3,12 +3,15 @@
 namespace Webkul\LSC\Listeners;
 
 use LSCache;
+use Webkul\LSC\Traits\DeletesAllCache;
 use Webkul\Product\Repositories\ProductBundleOptionProductRepository;
 use Webkul\Product\Repositories\ProductGroupedProductRepository;
 use Webkul\Product\Repositories\ProductRepository;
 
 class Product
 {
+    use DeletesAllCache;
+
     /**
      * Create a new listener instance.
      *
@@ -30,9 +33,7 @@ class Product
     {
         $urls = $this->getForgettableUrls($product);
 
-        $tags = ['home-products', 'home', ...$urls];
-
-        LSCache::purgeTags($tags);
+        LSCache::purgeTags($urls);
     }
 
     /**
@@ -47,9 +48,7 @@ class Product
 
         $urls = $this->getForgettableUrls($product);
 
-        $tags = ['home-products', 'home', ...$urls];
-
-        LSCache::purgeTags($tags);
+        LSCache::purgeTags($urls);
     }
 
     /**
@@ -67,6 +66,8 @@ class Product
         foreach ($products as $product) {
             $urls[] = 'product_'.$product->url_key;
         }
+
+        $this->deletePrivCache();
 
         return $urls;
     }
