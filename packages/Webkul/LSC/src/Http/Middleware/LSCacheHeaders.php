@@ -69,6 +69,7 @@ class LSCacheHeaders extends BaseLSCacheMiddleware
 
         if ($this->shouldInvalidateHomeCache($routeName)) {
             $this->purgeHomeCache();
+
             return $response;
         }
 
@@ -115,7 +116,7 @@ class LSCacheHeaders extends BaseLSCacheMiddleware
         }
 
         $slug = $isProductOrCategory ? urldecode(trim($request->getPathInfo(), '/')) : null;
-        $cacheKey = $isProductOrCategory ? 'product_or_category_' . $slug : ($isHomePage ? 'home_page' : null);
+        $cacheKey = $isProductOrCategory ? 'product_or_category_'.$slug : ($isHomePage ? 'home_page' : null);
         $cachedData = $cacheKey ? cache()->get($cacheKey) : null;
 
         $content = $response->getContent();
@@ -197,7 +198,7 @@ class LSCacheHeaders extends BaseLSCacheMiddleware
      */
     private function shouldSetNoCache($tags, $ttl): bool
     {
-        return (is_array($tags) && count(array_filter($tags)) === 0) || (is_numeric($ttl) && (int)$ttl === 0);
+        return (is_array($tags) && count(array_filter($tags)) === 0) || (is_numeric($ttl) && (int) $ttl === 0);
     }
 
     /**
@@ -243,5 +244,4 @@ class LSCacheHeaders extends BaseLSCacheMiddleware
 
         return $response;
     }
-
 }

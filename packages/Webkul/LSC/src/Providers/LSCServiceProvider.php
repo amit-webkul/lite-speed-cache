@@ -6,7 +6,6 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Webkul\Core\Http\Middleware\PreventRequestsDuringMaintenance;
-use Webkul\LSC\Console\Commands\PurgeLiteSpeedCache;
 use Webkul\LSC\Http\Middleware\LSCacheHeaders;
 use Webkul\LSC\Http\Middleware\NoLiteSpeedCache;
 
@@ -60,7 +59,8 @@ class LSCServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-                PurgeLiteSpeedCache::class,
+                \Webkul\LSC\Console\Commands\PurgeLiteSpeedCache::class,
+                \Webkul\LSC\Console\Commands\InstallLiteSpeedCache::class,
             ]);
         }
     }

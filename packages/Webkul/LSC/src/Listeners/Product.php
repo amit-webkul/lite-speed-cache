@@ -78,7 +78,7 @@ class Product
      * @param  \Webkul\Product\Contracts\Product  $product
      * @return array
      */
-    public function getAllRelatedProducts($product)
+    private function getAllRelatedProducts($product)
     {
         $products = [$product];
 
@@ -114,7 +114,7 @@ class Product
      * @param  \Webkul\Product\Contracts\Product  $product
      * @return array
      */
-    public function getParentBundleProducts($product)
+    private function getParentBundleProducts($product)
     {
         $bundleOptionProducts = $this->productBundleOptionProductRepository->findWhere([
             'product_id' => $product->id,
@@ -135,7 +135,7 @@ class Product
      * @param  \Webkul\Product\Contracts\Product  $product
      * @return array
      */
-    public function getParentGroupProducts($product)
+    private function getParentGroupProducts($product)
     {
         $groupedOptionProducts = $this->productGroupedProductRepository->findWhere([
             'associated_product_id' => $product->id,

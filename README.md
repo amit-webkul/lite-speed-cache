@@ -86,11 +86,7 @@ composer dump-autoload
 ```
 
 ```php
-php artisan vendor:publish --provider="Webkul\LSC\Providers\LSCServiceProvider" --force
-```
-
-```php
-php artisan optimize:clear
+php artisan litespeed:install
 ```
 
 ### For more information about the LSCache, You can follow the [Official LiteSpeed Documentation](https://docs.litespeedtech.com/lscache/lsclaravel/installation/#installation)

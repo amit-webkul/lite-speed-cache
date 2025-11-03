@@ -95,5 +95,9 @@ class EventServiceProvider extends ServiceProvider
         'checkout.cart.delete.before' => [
             'Webkul\LSC\Listeners\ThemeCustomization@afterChange',
         ],
+
+        'customer.after.login' => [
+            'Webkul\LSC\Listeners\CustomerSession@afterCreate',
+        ],
     ];
 }
