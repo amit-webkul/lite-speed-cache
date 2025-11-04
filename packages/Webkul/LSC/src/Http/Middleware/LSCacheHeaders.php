@@ -68,7 +68,7 @@ class LSCacheHeaders extends BaseLSCacheMiddleware
         $tags = $this->getRouteTags($routeName, $request->getPathInfo());
 
         if ($this->shouldInvalidateHomeCache($routeName)) {
-            $this->purgeHomeCache();
+            LSCache::purgeTags(['home', 'home-header']);
 
             return $response;
         }
@@ -165,14 +165,6 @@ class LSCacheHeaders extends BaseLSCacheMiddleware
             'shop.api.checkout.cart.store',
             'shop.api.checkout.cart.destroy',
         ], true);
-    }
-
-    /**
-     * Purge home page cache tags.
-     */
-    private function purgeHomeCache(): void
-    {
-        LSCache::purgeTags(['home', 'home-header']);
     }
 
     /**

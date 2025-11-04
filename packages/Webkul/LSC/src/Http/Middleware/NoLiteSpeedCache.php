@@ -12,6 +12,9 @@ class NoLiteSpeedCache
         'shop.cms.page',
         'shop.product_or_category.index',
         'shop.home.contact_us',
+        'shop.api.checkout.cart.index',
+        'shop.api.checkout.cart.store',
+        'shop.api.checkout.cart.destroy',
         'shop.search.index',
         'shop.compare.index',
     ];
