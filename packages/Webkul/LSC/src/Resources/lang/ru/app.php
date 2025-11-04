@@ -14,10 +14,10 @@ return [
                     'cache-application' => [
                         'info'             => 'Установите параметры кэш-приложения.',
                         'title'            => 'Кэш-приложение',
-                        'title-info'       => 'Настройка параметров кэш-приложения.',
+                        'title-info'       => 'Настройте LiteSpeed Cache: включите/отключите кэширование, установите значение TTL по умолчанию и выберите кэширование только для гостей.',
                         'status'           => 'Статус',
                         'default-ttl'      => 'TTL по умолчанию (время жизни)',
-                        'default-ttl-info' => 'Установите время жизни кэшированных элементов по умолчанию в секундах <a href="https://docs.litespeedtech.com/lscache/lsclaravel/settings/#cache-control">[Подробнее]</a>.',
+                        'default-ttl-info' => 'Установите время жизни кэшированных элементов по умолчанию в секундах <a class="text-blue-600" href="https://docs.litespeedtech.com/lscache/lsclaravel/settings/#cache-control" target="_blank">[Подробнее]</a>.',
                         'guest-only'       => 'Только для гостей',
                         'guest-only-info'  => 'Включите кэширование только для гостей. Если отключено, кэширование будет применяться ко всем пользователям.',
                     ],

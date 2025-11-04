@@ -30,7 +30,7 @@ class InstallLiteSpeedCache extends Command
         $this->info('Publishing vendor assets...');
         $this->call('vendor:publish', [
             '--provider' => 'Webkul\LSC\Providers\LSCServiceProvider',
-            '--force' => true,
+            '--force'    => true,
         ]);
 
         $this->info('Clearing optimization cache...');

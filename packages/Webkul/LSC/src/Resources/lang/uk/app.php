@@ -14,10 +14,10 @@ return [
                     'cache-application' => [
                         'info'             => 'Налаштуйте параметри кеш-застосунку.',
                         'title'            => 'Застосунок кешу',
-                        'title-info'       => 'Налаштуйте параметри кеш-застосунку.',
+                        'title-info'       => 'Налаштуйте LiteSpeed Cache: увімкніть/вимкніть кеш, встановіть значення TTL за замовчуванням і виберіть кешування лише для гостей.',
                         'status'           => 'Статус',
                         'default-ttl'      => 'TTL за замовчуванням (час життя)',
-                        'default-ttl-info' => 'Встановіть час життя кешованих елементів за замовчуванням у секундах <a href="https://docs.litespeedtech.com/lscache/lsclaravel/settings/#cache-control">[Детальніше]</a>.',
+                        'default-ttl-info' => 'Встановіть час життя кешованих елементів за замовчуванням у секундах <a class="text-blue-600" href="https://docs.litespeedtech.com/lscache/lsclaravel/settings/#cache-control" target="_blank">[Детальніше]</a>.',
                         'guest-only'       => 'Лише для гостей',
                         'guest-only-info'  => 'Увімкніть кешування лише для гостей. Якщо вимкнено, кешування буде застосовано до всіх користувачів.',
                     ],

@@ -14,10 +14,10 @@ return [
                     'cache-application' => [
                         'info'             => 'Stel opties voor de cache-applicatie in.',
                         'title'            => 'Cache-applicatie',
-                        'title-info'       => 'Configureer de instellingen van de cache-applicatie.',
+                        'title-info'       => 'Configureer LiteSpeed Cache: schakel caching in of uit, stel de standaard TTL in en kies caching alleen voor gasten.',
                         'status'           => 'Status',
                         'default-ttl'      => 'Standaard TTL (Time To Live)',
-                        'default-ttl-info' => 'Stel de standaard levensduur (in seconden) in voor gecachte items <a href="https://docs.litespeedtech.com/lscache/lsclaravel/settings/#cache-control">[Meer info]</a>.',
+                        'default-ttl-info' => 'Stel de standaard levensduur (in seconden) in voor gecachte items <a class="text-blue-600" href="https://docs.litespeedtech.com/lscache/lsclaravel/settings/#cache-control" target="_blank">[Meer info]</a>.',
                         'guest-only'       => 'Alleen gasten',
                         'guest-only-info'  => 'Schakel caching alleen voor gastgebruikers in. Als dit is uitgeschakeld, wordt caching toegepast op alle gebruikers.',
                     ],

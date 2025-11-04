@@ -14,10 +14,10 @@ return [
                     'cache-application' => [
                         'info'             => 'कैश एप्लिकेशन विकल्प सेट करें।',
                         'title'            => 'कैश एप्लिकेशन',
-                        'title-info'       => 'कैश एप्लिकेशन सेटिंग्स कॉन्फ़िगर करें।',
+                        'title-info'       => 'LiteSpeed कैश को कॉन्फ़िगर करें: कैशिंग सक्षम/अक्षम करें, डिफ़ॉल्ट TTL सेट करें, और केवल अतिथि के लिए कैशिंग चुनें।',
                         'status'           => 'स्थिति',
                         'default-ttl'      => 'डिफ़ॉल्ट TTL (टाइम टू लाइव)',
-                        'default-ttl-info' => 'कॅश किए गए आइटमों के लिए डिफ़ॉल्ट जीवनकाल (सेकंड में) सेट करें <a href="https://docs.litespeedtech.com/lscache/lsclaravel/settings/#cache-control">[अधिक जानकारी]</a>.',
+                        'default-ttl-info' => 'कॅश किए गए आइटमों के लिए डिफ़ॉल्ट जीवनकाल (सेकंड में) सेट करें <a class="text-blue-600" href="https://docs.litespeedtech.com/lscache/lsclaravel/settings/#cache-control" target="_blank">[अधिक जानकारी]</a>.',
                         'guest-only'       => 'केवल अतिथि',
                         'guest-only-info'  => 'केवल अतिथि उपयोगकर्ताओं के लिए कैशिंग सक्षम करें। यदि अक्षम किया गया है, तो कैशिंग सभी उपयोगकर्ताओं पर लागू होगी।',
                     ],

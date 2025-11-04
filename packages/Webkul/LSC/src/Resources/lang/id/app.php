@@ -14,10 +14,10 @@ return [
                     'cache-application' => [
                         'info'             => 'Atur opsi aplikasi cache.',
                         'title'            => 'Aplikasi Cache',
-                        'title-info'       => 'Konfigurasikan pengaturan aplikasi cache.',
+                        'title-info'       => 'Konfigurasikan LiteSpeed Cache: aktifkan atau nonaktifkan caching, atur TTL default, dan pilih caching hanya untuk tamu.',
                         'status'           => 'Status',
-                        'default-ttl'      => 'TTL Default (Time To Live)',
-                        'default-ttl-info' => 'Atur waktu hidup (TTL) default untuk item yang di-cache dalam satuan detik <a href="https://docs.litespeedtech.com/lscache/lsclaravel/settings/#cache-control">[Info Lebih Lanjut]</a>.',
+                        'default-ttl'      => 'TTL Default (Waktu Hidup)',
+                        'default-ttl-info' => 'Atur waktu hidup (TTL) default untuk item yang di-cache dalam satuan detik <a class="text-blue-600" href="https://docs.litespeedtech.com/lscache/lsclaravel/settings/#cache-control" target="_blank">[Info Lebih Lanjut]</a>.',
                         'guest-only'       => 'Hanya Tamu',
                         'guest-only-info'  => 'Aktifkan caching hanya untuk pengguna tamu. Jika dinonaktifkan, caching akan diterapkan untuk semua pengguna.',
                     ],
