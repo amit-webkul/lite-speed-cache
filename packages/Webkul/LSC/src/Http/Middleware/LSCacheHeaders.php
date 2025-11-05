@@ -67,6 +67,7 @@ class LSCacheHeaders extends BaseLSCacheMiddleware
 
         $tags = $this->getRouteTags($routeName, $request->getPathInfo());
 
+        // Invalidate home cache for certain actions.
         if ($this->shouldInvalidateHomeCache($routeName)) {
             LSCache::purgeTags(['home', 'home-header']);
 
@@ -76,13 +77,19 @@ class LSCacheHeaders extends BaseLSCacheMiddleware
         $lsCacheTTL = $this->getCacheTTL();
         $lscacheControl = $this->getCacheControlHeader($lsCacheTTL);
 
+        // Set no-cache headers if no tags or ttl is 0.
         if ($this->shouldSetNoCache($tags, $lsCacheTTL)) {
             return $this->setNoCacheHeaders($response);
         }
 
-        if (! (in_array($request->getMethod(), ['GET', 'HEAD']) && $response->getContent() && $response->getStatusCode() === 200)) {
-            return $this->setNoCacheHeaders($response);
-        }
+        // Set LiteSpeed Cache headers.
+        if (
+            ! (
+                in_array($request->getMethod(), ['GET', 'HEAD'])
+                && $response->getContent()
+                && $response->getStatusCode() === 200
+            )
+        ) return $this->setNoCacheHeaders($response);
 
         $response->headers->set('Cache-Control', $lscacheControl);
         $response->headers->set('X-LiteSpeed-Cache-Control', $lscacheControl);
@@ -111,9 +118,7 @@ class LSCacheHeaders extends BaseLSCacheMiddleware
         $isProductOrCategory = $routeName === 'shop.product_or_category.index' && in_array($method, ['GET', 'HEAD']);
         $isHomePage = $routeName === 'shop.home.index' && in_array($method, ['GET', 'HEAD']);
 
-        if (! ($isProductOrCategory || $isHomePage)) {
-            return null;
-        }
+        if (! ($isProductOrCategory || $isHomePage)) return null;
 
         $slug = $isProductOrCategory ? urldecode(trim($request->getPathInfo(), '/')) : null;
         $cacheKey = $isProductOrCategory ? 'product_or_category_'.$slug : ($isHomePage ? 'home_page' : null);
