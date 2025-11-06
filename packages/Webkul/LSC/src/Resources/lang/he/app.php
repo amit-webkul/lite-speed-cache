@@ -17,7 +17,7 @@ return [
                         'title-info'       => 'הגדר את LiteSpeed Cache: הפעל/השבת את המטמון, קבע את TTL ברירת המחדל ובחר האם המטמון יהיה רק עבור אורחים.',
                         'status'           => 'מצב',
                         'default-ttl'      => 'TTL ברירת מחדל (זמן חיים)',
-                        'default-ttl-info' => 'הגדר את משך החיים ברירת מחדל של פריטים במטמון בשניות <a class="text-blue-600" href="https://docs.litespeedtech.com/lscache/lsclaravel/settings/#cache-control" target="_blank">[מידע נוסף]</a>.',
+                        'default-ttl-info' => 'הגדר את משך החיים ברירת מחדל של פריטים במטמון בשניות <a class="text-blue-600 hover:underline" href="https://docs.litespeedtech.com/lscache/lsclaravel/settings/#cache-control" target="_blank">מידע נוסף</a>.',
                         'guest-only'       => 'רק אורחים',
                         'guest-only-info'  => 'אפשר מטמון רק למשתמשים אורחים. אם מבוטל, המטמון יחול על כל המשתמשים.',
                     ],
