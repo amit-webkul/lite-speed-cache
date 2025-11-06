@@ -58,10 +58,16 @@ Route::middleware(['lscache.response', 'cache.response'])->group(function () {
         ->name('shop.compare.index');
 });
 
+/**
+ * Contact us form submit route.
+ */
 Route::post('contact-us/send-mail', [HomeController::class, 'sendContactUsMail'])
     ->name('shop.home.contact_us.send_mail')
     ->middleware('cache.response');
 
+/**
+ * Search upload route.
+ */
 Route::post('search/upload', [SearchController::class, 'upload'])->name('shop.search.upload');
 
 /**

@@ -89,7 +89,9 @@ class LSCacheHeaders extends BaseLSCacheMiddleware
                 && $response->getContent()
                 && $response->getStatusCode() === 200
             )
-        ) return $this->setNoCacheHeaders($response);
+        ) {
+            return $this->setNoCacheHeaders($response);
+        }
 
         $response->headers->set('Cache-Control', $lscacheControl);
         $response->headers->set('X-LiteSpeed-Cache-Control', $lscacheControl);
@@ -118,7 +120,9 @@ class LSCacheHeaders extends BaseLSCacheMiddleware
         $isProductOrCategory = $routeName === 'shop.product_or_category.index' && in_array($method, ['GET', 'HEAD']);
         $isHomePage = $routeName === 'shop.home.index' && in_array($method, ['GET', 'HEAD']);
 
-        if (! ($isProductOrCategory || $isHomePage)) return null;
+        if (! ($isProductOrCategory || $isHomePage)) {
+            return null;
+        }
 
         $slug = $isProductOrCategory ? urldecode(trim($request->getPathInfo(), '/')) : null;
         $cacheKey = $isProductOrCategory ? 'product_or_category_'.$slug : ($isHomePage ? 'home_page' : null);

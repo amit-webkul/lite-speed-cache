@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 
 class NoLiteSpeedCache
 {
+    /**
+     * Routes that are allowed to be cached.
+     */
     protected $cacheRoutes = [
         'shop.home.index',
         'shop.cms.page',
@@ -19,6 +22,9 @@ class NoLiteSpeedCache
         'shop.compare.index',
     ];
 
+    /**
+     * Handle an incoming request.
+     */
     public function handle(Request $request, Closure $next)
     {
         $response = $next($request);

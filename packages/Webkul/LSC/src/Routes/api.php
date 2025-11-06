@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 use Webkul\LSC\Http\Controllers\API\LoginContentController;
 use Webkul\LSC\Http\Middleware\NoLiteSpeedCache;
 
+/**
+ * Login content routes.
+ */
 Route::group(['middleware' => [NoLiteSpeedCache::class], 'prefix' => 'api'], function () {
     Route::controller(LoginContentController::class)->group(function () {
         Route::get('login-desktop-dropdown', 'getLoginDesktopDropdownHtml')
